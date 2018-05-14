@@ -4,7 +4,7 @@ from django.db import models
 class Blockchain(models.Model):
     """This class represents the Blockchain model."""
 
-    index = models.IntegerField()
+    index = models.IntegerField(unique=True)
     timestamp = models.DateTimeField()
     proof = models.IntegerField()
     # SHA256 digest will always be 256bit = 64 hex digits
