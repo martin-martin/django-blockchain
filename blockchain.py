@@ -12,7 +12,6 @@ class Blockchain():
         # create the genesis block with default seed values
         self.new_block(previous_hash=1, proof=100)
 
-
     def new_block(self, proof, previous_hash=None):
         """"Creates a new block and adds it to the chain.
 
@@ -28,16 +27,13 @@ class Blockchain():
             'timestamp': time(),
             'transactions': self.current_transactions,
             'proof': proof,
-            'previous_hash': previous_hash or self.hash_block(last_block)
-            # ^^^ thinking this should work too, but otherwise do the below.
-            # 'previous_hash': previous_hash or self.hash_block(self.chain[-1])
+            'previous_hash': previous_hash or self.hash_block(self.chain[-1])
         }
         # reset list of current transactions
         self.current_transactions = []
 
         self.chain.append(block)
         return block
-
 
     def new_transaction(self, sender, recipient, amount):
         """"Creates a new transaction and adds it to next mined block.
@@ -57,7 +53,6 @@ class Blockchain():
             })
         return self.last_block['index'] + 1
 
-
     @staticmethod
     def hash_block(block):
         """Hashes a block using SHA-256.
@@ -72,7 +67,6 @@ class Blockchain():
         block_string = json.dumps(block, sort_keys=True).encode()
         return hashlib.sha256(block_string).hexdigest()
 
-
     @property
     def last_block(self):
         """Returns the last block in the chain.
@@ -81,7 +75,6 @@ class Blockchain():
             <dict>: last block in the blockchain
         """
         return self.chain[-1]
-
 
     def proof_of_work(self, last_proof):
         """Simple Proof-Of-Work Algorithm:
@@ -98,7 +91,6 @@ class Blockchain():
         while self.validate_proof(last_proof, proof) is False:
             proof += 1
         return proof
-
 
     @staticmethod
     def validate_proof(last_proof, proof):
