@@ -13,6 +13,9 @@ class Blockchain(models.Model):
     # block with the previous index anyways, but might be easier like so
     previous_hash = models.CharField(max_length=64, blank=False)
 
+    def __str__(self):
+        return f"Block {self.index}: {self.current_hash}"
+
 
 class Transactions(models.Model):
     """represents the Transactions model."""
@@ -21,7 +24,9 @@ class Transactions(models.Model):
     # however, since we're not planning to mess with this database
     # and use it as append-only (and only for quick look-up)
     # we're referencing simply the block number.
-    block_index = models.ForeignKey('Blockchain', to_field='index')
+    block_index = models.ForeignKey('Blockchain',
+                                    on_delete=models.CASCADE,
+                                    to_field='index')
     # addresses won't be longer than 34 characters.
     # TODO: double-check whether I set this up correctly
     sender = models.CharField(max_length=34)
@@ -29,3 +34,6 @@ class Transactions(models.Model):
     # a sensible blockchain would allow storing floats
     # or at least make a BigIntegerField() to allow for satoshi repr.
     amount = models.IntegerField()
+
+    def __str__(self):
+        return f"Contains transactions in Block {self.block_index}"
