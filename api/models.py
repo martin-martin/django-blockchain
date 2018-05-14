@@ -5,7 +5,9 @@ class Blockchain(models.Model):
     """This class represents the Blockchain model."""
 
     index = models.IntegerField(unique=True)
-    timestamp = models.DateTimeField()
+    # timestamp is represented by python's time.time(),
+    # which is seconds since epoch in float()
+    timestamp = models.FloatField()
     proof = models.IntegerField()
     # SHA256 digest will always be 256bit = 64 hex digits
     current_hash = models.CharField(max_length=64, blank=False)
